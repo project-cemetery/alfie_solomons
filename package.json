@@ -1,0 +1,29 @@
+{
+  "name": "mr-solomons",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:checkmoney/mr-solomons.git",
+  "author": "Igor Kamyshev <igor@kamyshev.me>",
+  "license": "MIT",
+  "dependencies": {
+    "awilix": "^4.2.2",
+    "date-fns": "^2.8.1",
+    "fastify": "^2.10.0"
+  },
+  "devDependencies": {
+    "@solid-soda/scripts": "^1.14.9"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn soda lint-staged",
+      "pre-push": "yarn soda lint",
+      "commit-msg": "yarn soda commitlint"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "s": "yarn soda"
+  }
+}
