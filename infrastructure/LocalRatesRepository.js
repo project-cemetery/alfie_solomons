@@ -31,9 +31,13 @@ class LocalRatesRepository {
       .where({ from, to })
       .whereBetween('collectAt', period)
       .first()
-      .table('exchange_rate');
+      .table(ExchangeRateModel.TABLE);
 
-    return ExchangeRateModel.fromObject(rate);
+    if (rate) {
+      return ExchangeRateModel.fromObject(rate);
+    }
+
+    return null;
   };
 }
 

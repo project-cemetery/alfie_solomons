@@ -25,7 +25,9 @@ class MoneyConverter {
         date,
       );
 
-      await this.localRatesSaver.save(rate);
+      await this.localRatesSaver.save(rate).catch(() => {
+        // okay, we can't save rate to local registry
+      });
     }
 
     if (!rate) {

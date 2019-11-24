@@ -1,7 +1,12 @@
+const { ExchangeRateModel } = require('./model/ExchangeRateModel');
+
 class LocalRatesSaver {
+  constructor({ queryBuilder }) {
+    this.queryBuilder = queryBuilder;
+  }
+
   save = async rate => {
-    console.log(rate);
-    // TODO: save to db
+    await this.queryBuilder.insert(rate).table(ExchangeRateModel.TABLE);
   };
 }
 
