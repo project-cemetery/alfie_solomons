@@ -2,7 +2,7 @@ const { differenceInDays } = require('date-fns');
 const { timeout } = require('promise-timeout');
 const { Option } = require('nanoption');
 
-const { ExchangeRate } = require('../domain/ExchangeRate');
+const { ExchangeRateModel } = require('./model/ExchangeRateModel');
 
 class RemoteRatesRepository {
   constructor({ mannyApiClient, exchangeRatesApiClient }) {
@@ -21,7 +21,7 @@ class RemoteRatesRepository {
       : this._getExchangeRate(from, to));
 
     if (actualRate.nonEmpty()) {
-      return new ExchangeRate(from, to, date, actualRate.get());
+      return new ExchangeRateModel(from, to, date, actualRate.get());
     }
 
     return null;
