@@ -9,18 +9,24 @@ class ConvertController {
     const requestIsValid = this._validate(query);
 
     if (!requestIsValid) {
-      console.log('INVALID');
-      // TODO: return 400
+      // TODO: add real things
+      throw new Error('Invalid query');
     }
 
     const { amount, from, to, date } = query;
 
     const money = {
       amount: BigInt(amount),
-      currency: from,
+      currency: from.toUpperCase(),
     };
+    const targetCurrency = to.toUpperCase();
+    const when = parseISO(date);
 
-    const result = await this.moneyConverter.convert(money, to, date);
+    const result = await this.moneyConverter.convert(
+      money,
+      targetCurrency,
+      when,
+    );
 
     return {
       result: result.toString(),

@@ -24,7 +24,13 @@ class MoneyConverter {
         targetCurrency,
         date,
       );
+
       await this.localRatesSaver.save(rate);
+    }
+
+    if (!rate) {
+      // TODO: we can't transform it
+      throw new Error('we can not transform it');
     }
 
     return this.exchanger.exchange(amount, rate);

@@ -10,6 +10,12 @@ const { LocalRatesSaver } = require('./infrastructure/LocalRatesSaver');
 const {
   RemoteRatesRepository,
 } = require('./infrastructure/RemoteRatesRepository');
+const {
+  MannyApiClient,
+} = require('./infrastructure/exchangeApi/MannyApiClient');
+const {
+  ExchangeRatesApiClient,
+} = require('./infrastructure/exchangeApi/ExchangeRatesApiClient');
 
 // Create the container and set the injectionMode to PROXY (which is also the default).
 const container = awilix.createContainer({
@@ -27,6 +33,8 @@ container.register({
   localRatesRepository: awilix.asClass(LocalRatesRepository),
   localRatesSaver: awilix.asClass(LocalRatesSaver),
   remoteRatesRepository: awilix.asClass(RemoteRatesRepository),
+  mannyApiClient: awilix.asClass(MannyApiClient),
+  exchangeRatesApiClient: awilix.asClass(ExchangeRatesApiClient),
 });
 
 module.exports = {
