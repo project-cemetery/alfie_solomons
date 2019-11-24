@@ -3,8 +3,8 @@ const { format, differenceInDays } = require('date-fns');
 const { Option } = require('nanoption');
 
 class MannyApiClient {
-  constructor() {
-    this._apiKey = 'fsd'; // TODO: get from config
+  constructor({ config }) {
+    this._apiKey = config.getOrThrow('MANNY_API_KEY');
 
     this._simplePromises = {};
     this._historyPromises = {};

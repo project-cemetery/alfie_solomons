@@ -16,6 +16,7 @@ const {
 const {
   ExchangeRatesApiClient,
 } = require('./infrastructure/exchangeApi/ExchangeRatesApiClient');
+const { getConfig } = require('./utils/getConfig');
 
 // Create the container and set the injectionMode to PROXY (which is also the default).
 const container = awilix.createContainer({
@@ -35,6 +36,7 @@ container.register({
   remoteRatesRepository: awilix.asClass(RemoteRatesRepository),
   mannyApiClient: awilix.asClass(MannyApiClient),
   exchangeRatesApiClient: awilix.asClass(ExchangeRatesApiClient),
+  config: awilix.asValue(getConfig()),
 });
 
 module.exports = {

@@ -6,6 +6,7 @@
   "author": "Igor Kamyshev <igor@kamyshev.me>",
   "license": "MIT",
   "dependencies": {
+    "@solid-soda/config": "^2.0.0",
     "awilix": "^4.2.2",
     "axios": "^0.19.0",
     "date-fns": "^2.8.1",
