@@ -17,8 +17,37 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "yarn.lock" }}
       - run: yarn s lint
+  push:
+    docker:
+      - image: docker:17.05.0-ce-git
+
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Setup Env
+          command: |
+            echo 'export VERSION=$(node ./bin/version.js)' >> $BASH_ENV
+            echo 'export IMAGE_TAG=${VERSION:-latest}' >> $BASH_ENV
+            echo 'export IMAGE_NAME=mr-solomons' >> $BASH_ENV
+            echo 'export ORG_NAME=checkmoney' >> $BASH_ENV
+      - run:
+          name: Build and push Docker image
+          command: |
+            source $BASH_ENV
+            docker build -t $ORG_NAME/$IMAGE_NAME:$IMAGE_TAG .
+            docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+            docker push $ORG_NAME/$IMAGE_NAME:$IMAGE_TAG
 workflows:
   version: 2
-  check-code:
+  build:
     jobs:
       - lint
+      - push:
+          filters:
+            branches:
+              only: master
+            tags:
+              only: /^v.*/
