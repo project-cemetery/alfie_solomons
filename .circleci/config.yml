@@ -29,7 +29,8 @@ jobs:
       - run:
           name: Setup Env
           command: |
-            echo "export IMAGE_TAG=${CIRCLE_TAG:-latest}" >> $BASH_ENV
+            VERSION="${CIRCLE_TAG:-vlatest}"
+            echo "export IMAGE_TAG=${VERSION:1}" >> $BASH_ENV
       - run:
           name: Build and push Docker image
           command: |
