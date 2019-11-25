@@ -29,7 +29,7 @@ jobs:
       - run:
           name: Setup Env
           command: |
-            echo 'export VERSION=$(node ./bin/version.js)' >> $BASH_ENV
+            VERSION=`grep -o '"version": "[^"]*' package.json | grep -o '[^"]*$'`
             echo 'export IMAGE_TAG=${VERSION:-latest}' >> $BASH_ENV
             echo 'export IMAGE_NAME=mr-solomons' >> $BASH_ENV
             echo 'export ORG_NAME=checkmoney' >> $BASH_ENV
