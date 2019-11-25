@@ -1,6 +1,7 @@
 const awilix = require('awilix');
 
 const { ConvertController } = require('./presentation/v1/ConvertController');
+const { ErrorHandler } = require('./presentation/ErrorHandler');
 const { MoneyConverter } = require('./application/MoneyConverter');
 const { Exchanger } = require('./domain/Exchanger');
 const {
@@ -28,6 +29,7 @@ const container = awilix.createContainer({
 container.register({
   // presentation
   convertController: awilix.asClass(ConvertController),
+  errorHandler: awilix.asClass(ErrorHandler),
   //application
   moneyConverter: awilix.asClass(MoneyConverter),
   // domain

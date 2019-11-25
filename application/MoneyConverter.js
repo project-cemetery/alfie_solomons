@@ -1,3 +1,7 @@
+const {
+  CoversationFailedException,
+} = require('./error/CoversationFailedException');
+
 class MoneyConverter {
   constructor({
     exchanger,
@@ -12,18 +16,16 @@ class MoneyConverter {
   }
 
   convert = async ({ amount, currency }, targetCurrency, date) => {
-    let rate = await this.localRatesRepository.find(
-      currency,
-      targetCurrency,
-      date,
-    );
+    const rate = await this._getRate(currency, targetCurrency, date);
+
+    return this.exchanger.exchange(amount, rate);
+  };
+
+  _getRate = async (from, to, date) => {
+    let rate = await this.localRatesRepository.find(from, to, date);
 
     if (!rate) {
-      rate = await this.remoteRatesRepository.get(
-        currency,
-        targetCurrency,
-        date,
-      );
+      rate = await this.remoteRatesRepository.find(from, to, date);
 
       await this.localRatesSaver.save(rate).catch(() => {
         // okay, we can't save rate to local registry
@@ -31,11 +33,10 @@ class MoneyConverter {
     }
 
     if (!rate) {
-      // TODO: we can't transform it
-      throw new Error('we can not transform it');
+      throw new CoversationFailedException(from, to, date);
     }
 
-    return this.exchanger.exchange(amount, rate);
+    return rate;
   };
 }
 

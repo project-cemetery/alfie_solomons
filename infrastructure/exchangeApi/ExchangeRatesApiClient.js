@@ -19,7 +19,7 @@ class ExchangeRatesApiClient {
   };
 
   getHistoryExchangeRate = async (from, to, when) => {
-    const date = format(when, 'YYYY-MM-DD');
+    const date = format(when, 'yyyy-MM-dd');
     const query = `${from}_${to}`;
 
     const fullQuery = `${query}_${date}`;

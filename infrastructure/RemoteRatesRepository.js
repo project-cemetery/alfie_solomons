@@ -9,7 +9,7 @@ class RemoteRatesRepository {
     this.clients = [mannyApiClient, exchangeRatesApiClient];
   }
 
-  get = async (from, to, date) => {
+  find = async (from, to, date) => {
     const MIN_DAY_FOR_HISTORY_TRANSACTION = 2;
 
     const rateIsOld =

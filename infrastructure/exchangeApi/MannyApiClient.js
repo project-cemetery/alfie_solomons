@@ -2,6 +2,8 @@ const axios = require('axios');
 const { format, differenceInDays } = require('date-fns');
 const { Option } = require('nanoption');
 
+const { identity } = require('../../helpers/identity');
+
 class MannyApiClient {
   constructor({ config }) {
     this._apiKey = config.getOrThrow('MANNY_API_KEY');
@@ -29,7 +31,7 @@ class MannyApiClient {
       return Promise.resolve(Option.of(null));
     }
 
-    const date = format(when, 'YYYY-MM-DD');
+    const date = format(when, 'yyyy-MM-dd');
     const query = `${from}_${to}`;
 
     const fullQuery = `${query}_${date}`;
@@ -47,7 +49,7 @@ class MannyApiClient {
     return this._historyPromises[fullQuery];
   };
 
-  _request = async ({ query, date }, mapper) => {
+  _request = async ({ query, date }, mapper = identity) => {
     const API_URL = 'https://free.currencyconverterapi.com/api/v6/convert';
 
     const dateParam = !!date ? `&date=${date}` : '';
