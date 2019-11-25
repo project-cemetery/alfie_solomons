@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  soda-lint: checkmoney/soda-lint@1.0.0
+  soda-lint: checkmoney/soda-lint@1.0.1
 jobs:
   push:
     docker:
