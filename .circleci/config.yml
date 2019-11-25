@@ -27,7 +27,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - checkmoney/soda-lint:
+      - soda-lint:
           filters:
             branches:
               only: /.*/
@@ -40,4 +40,4 @@ workflows:
             tags:
               only: /.*/
           requires:
-            - checkmoney/soda-lint
+            - soda-lint
