@@ -36,6 +36,7 @@ jobs:
       - run:
           name: Build and push Docker image
           command: |
+            echo $VERSION
             source $BASH_ENV
             docker build -t $ORG_NAME/$IMAGE_NAME:$IMAGE_TAG .
             docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
