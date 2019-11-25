@@ -47,6 +47,6 @@ workflows:
             branches:
               only: master
             tags:
-              only: /^v.*/
+              only: /.*/
           requires:
             - lint
