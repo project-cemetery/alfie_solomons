@@ -41,7 +41,12 @@ workflows:
   version: 2
   build:
     jobs:
-      - lint
+      - lint:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              only: /.*/
       - push:
           filters:
             branches:
