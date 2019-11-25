@@ -29,19 +29,14 @@ jobs:
       - run:
           name: Setup Env
           command: |
-            VERSION=`grep -o '"version": "[^"]*' package.json | grep -o '[^"]*$'`
-            echo 'export VERSION=${VERSION}' >> $BASH_ENV
-            echo 'export IMAGE_TAG=${VERSION:-latest}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=mr-solomons' >> $BASH_ENV
-            echo 'export ORG_NAME=checkmoney' >> $BASH_ENV
+            echo "export IMAGE_TAG=${CIRCLE_TAG:-latest}" >> $BASH_ENV
       - run:
           name: Build and push Docker image
           command: |
             source $BASH_ENV
-            echo $VERSION
-            docker build -t $ORG_NAME/$IMAGE_NAME:$IMAGE_TAG .
+            docker build -t checkmoney/mr-solomons:$IMAGE_TAG .
             docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-            docker push $ORG_NAME/$IMAGE_NAME:$IMAGE_TAG
+            docker push checkmoney/mr-solomons:$IMAGE_TAG
 workflows:
   version: 2
   build:
@@ -53,3 +48,5 @@ workflows:
               only: master
             tags:
               only: /^v.*/
+          requires:
+            - lint
