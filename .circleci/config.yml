@@ -30,14 +30,15 @@ jobs:
           name: Setup Env
           command: |
             VERSION=`grep -o '"version": "[^"]*' package.json | grep -o '[^"]*$'`
+            echo 'export VERSION=${VERSION}' >> $BASH_ENV
             echo 'export IMAGE_TAG=${VERSION:-latest}' >> $BASH_ENV
             echo 'export IMAGE_NAME=mr-solomons' >> $BASH_ENV
             echo 'export ORG_NAME=checkmoney' >> $BASH_ENV
       - run:
           name: Build and push Docker image
           command: |
-            echo $VERSION
             source $BASH_ENV
+            echo $VERSION
             docker build -t $ORG_NAME/$IMAGE_NAME:$IMAGE_TAG .
             docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
             docker push $ORG_NAME/$IMAGE_NAME:$IMAGE_TAG
