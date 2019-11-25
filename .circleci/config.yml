@@ -40,4 +40,4 @@ workflows:
             tags:
               only: /.*/
           requires:
-            - lint
+            - checkmoney/soda-lint
