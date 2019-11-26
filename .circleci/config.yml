@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  soda-lint: checkmoney/soda-lint@1.0.1
+  soda-lint: checkmoney/soda-lint@1.0.2
 jobs:
   push:
     docker:
@@ -27,7 +27,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - soda-lint/lint:
+      - soda-lint/invoke:
           filters:
             branches:
               only: /.*/
@@ -40,4 +40,4 @@ workflows:
             tags:
               only: /.*/
           requires:
-            - soda-lint/lint
+            - soda-lint/invoke
