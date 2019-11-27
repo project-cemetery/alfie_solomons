@@ -1,4 +1,4 @@
-const PRECISION_MULTIPLIER = 1000;
+const PRECISION_MULTIPLIER = 10000;
 
 class Exchanger {
   exchange = (amount, { rate }) =>
