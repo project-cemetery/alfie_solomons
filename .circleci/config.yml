@@ -34,7 +34,7 @@ workflows:
             - soda-lint/invoke
             - jest/test
       - deploy/roll_out:
-          ssh_user: SHH_USER
+          ssh_user: SSH_USER
           ssh_host: SSH_HOST
           image_name: "mr-solomons"
           image_version: CIRCLE_TAG
