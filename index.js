@@ -4,7 +4,8 @@ const swagger = require('fastify-swagger');
 const { container } = require('./container');
 const { setupSwagger } = require('./addons/setupSwagger');
 
-fastify.register(swagger, setupSwagger('/v1/docs'));
+const config = container.resolve('config');
+fastify.register(swagger, setupSwagger('/v1/docs', config));
 
 const convertController = container.resolve('convertController');
 fastify.get('/v1/convert', convertController.docs, convertController.handle);
