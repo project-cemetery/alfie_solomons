@@ -9,6 +9,59 @@ class ConvertController {
     this.cache = cache;
   }
 
+  docs = {
+    schema: {
+      description: 'Convert money from one currency to another for exact date',
+      summary: 'Convert money',
+      query: {
+        amount: {
+          type: 'string',
+          description:
+            'String representation of money amount in penny (money * 100)',
+        },
+        from: {
+          type: 'string',
+          description: 'Original currency',
+        },
+        to: {
+          type: 'string',
+          description: 'Target currency',
+        },
+        date: {
+          type: 'string',
+          format: 'date',
+          description: 'Date of transaction',
+        },
+      },
+      response: {
+        200: {
+          description: 'Successful response',
+          type: 'object',
+          properties: {
+            result: {
+              type: 'string',
+              description:
+                'String representation of converted money amount in penny (money * 100)',
+            },
+          },
+        },
+        400: {
+          description: 'Invalid request',
+          type: 'object',
+          properties: {
+            message: {
+              type: 'string',
+              description: 'Error message',
+            },
+            query: {
+              type: 'object',
+            },
+          },
+        },
+      },
+    },
+  };
+
   handle = async ({ query }, reply) =>
     this.errorHandler.invoke(reply, async () => {
       await this._throwUnlessValid(query);
