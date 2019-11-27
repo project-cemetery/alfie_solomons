@@ -16,12 +16,25 @@ class MoneyConverter {
   }
 
   convert = async ({ amount, currency }, targetCurrency, date) => {
-    const rate = await this._getRate(currency, targetCurrency, date);
+    let accurate = true;
+    let rate = await this._findAccurateRate(currency, targetCurrency, date);
 
-    return this.exchanger.exchange(amount, rate);
+    if (!rate) {
+      accurate = false;
+      rate = await this.localRatesRepository.findNearest(from, to, date);
+    }
+
+    if (!rate) {
+      throw new CoversationFailedException(currency, targetCurrency, date);
+    }
+
+    return {
+      value: this.exchanger.exchange(amount, rate),
+      accurate,
+    };
   };
 
-  _getRate = async (from, to, date) => {
+  _findAccurateRate = async (from, to, date) => {
     let rate = await this.localRatesRepository.find(from, to, date);
 
     if (!rate) {
@@ -30,10 +43,6 @@ class MoneyConverter {
       await this.localRatesSaver.save(rate).catch(() => {
         // okay, we can't save rate to local registry
       });
-    }
-
-    if (!rate) {
-      throw new CoversationFailedException(from, to, date);
     }
 
     return rate;

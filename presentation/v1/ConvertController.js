@@ -3,14 +3,23 @@ const { isValid, parseISO } = require('date-fns');
 const { InvalidQueryException } = require('../error/InvalidQueryException');
 
 class ConvertController {
-  constructor({ moneyConverter, errorHandler }) {
+  constructor({ moneyConverter, errorHandler, cache }) {
     this.moneyConverter = moneyConverter;
     this.errorHandler = errorHandler;
+    this.cache = cache;
   }
 
   handle = async ({ query }, reply) =>
     this.errorHandler.invoke(reply, async () => {
       await this._throwUnlessValid(query);
+
+      const [cachedValue, saveToCache] = await this._useCache(query);
+
+      if (cachedValue) {
+        return {
+          result: cachedValue,
+        };
+      }
 
       const { amount, from, to, date } = query;
 
@@ -21,14 +30,18 @@ class ConvertController {
       const targetCurrency = to.toUpperCase();
       const when = parseISO(date);
 
-      const result = await this.moneyConverter.convert(
+      const { value, accurate } = await this.moneyConverter.convert(
         money,
         targetCurrency,
         when,
       );
 
+      if (accurate) {
+        await saveToCache(value.toString());
+      }
+
       return {
-        result: result.toString(),
+        result: value.toString(),
       };
     });
 
@@ -51,6 +64,18 @@ class ConvertController {
     if (!requestIsValid()) {
       throw new InvalidQueryException(query);
     }
+  };
+
+  _useCache = async ({ from, to, amount, date }) => {
+    const key = `${from}_${to}_${amount}_${date}`;
+
+    const cached = await this.cache.get(key);
+
+    const setCached = async value => {
+      await this.cache.set(key, value);
+    };
+
+    return [cached, setCached];
   };
 }
 
