@@ -31,3 +31,4 @@ workflows:
               only: /.*/
           requires:
             - soda-lint/invoke
+            - jest/test
