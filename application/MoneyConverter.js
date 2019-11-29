@@ -21,7 +21,11 @@ class MoneyConverter {
 
     if (!rate) {
       accurate = false;
-      rate = await this.localRatesRepository.findNearest(from, to, date);
+      rate = await this.localRatesRepository.findNearest(
+        currency,
+        targetCurrency,
+        date,
+      );
     }
 
     if (!rate) {
