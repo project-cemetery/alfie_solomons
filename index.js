@@ -17,7 +17,7 @@ const start = async () => {
       fastify.swagger();
     });
 
-    await fastify.listen(3000);
+    await fastify.listen(3000, '0.0.0.0');
 
     fastify.log.info(`server listening on ${fastify.server.address().port}`);
   } catch (error) {
