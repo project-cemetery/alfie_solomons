@@ -3,7 +3,7 @@ orbs:
   soda-lint: checkmoney/soda-lint@1.0.2
   docker: checkmoney/docker@1.0.1
   jest: checkmoney/jest@1.0.0
-  deploy: checkmoney/deploy@1.0.9
+  deploy: checkmoney/deploy@1.0.10
 workflows:
   version: 2
   build:
@@ -40,6 +40,7 @@ workflows:
           image_version: CIRCLE_TAG
           path_to_app: PATH_TO_APP
           apply_post_install: true
+          container_name: "solomons"
           post_install_script: "yarn evolutions -y"
           filters:
             branches:
