@@ -6,7 +6,7 @@
   "author": "Igor Kamyshev <igor@kamyshev.me>",
   "license": "MIT",
   "dependencies": {
-    "@solid-soda/cache": "^0.3.1",
+    "@solid-soda/cache": "^0.4.1",
     "@solid-soda/config": "^2.0.0",
     "@solid-soda/evolutions": "^0.1.0",
     "awilix": "^4.2.2",

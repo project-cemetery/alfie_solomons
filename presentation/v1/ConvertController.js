@@ -66,15 +66,16 @@ class ConvertController {
     this.errorHandler.invoke(reply, async () => {
       await this._throwUnlessValid(query);
 
-      const [cachedValue, saveToCache] = await this._useCache(query);
+      const { from, to, amount, date } = query;
+      const [cachedValue, saveToCache] = await this.cache.useCache(
+        `${from}_${to}_${amount}_${date}`,
+      );
 
       if (cachedValue) {
         return {
           result: cachedValue,
         };
       }
-
-      const { amount, from, to, date } = query;
 
       const money = {
         amount: BigInt(amount),
@@ -117,18 +118,6 @@ class ConvertController {
     if (!requestIsValid()) {
       throw new InvalidQueryException(query);
     }
-  };
-
-  _useCache = async ({ from, to, amount, date }) => {
-    const key = `${from}_${to}_${amount}_${date}`;
-
-    const cached = await this.cache.get(key);
-
-    const setCached = async value => {
-      await this.cache.set(key, value);
-    };
-
-    return [cached, setCached];
   };
 }
 
