@@ -1,5 +1,5 @@
 const setupSwagger = (path, config) => {
-  const host = config.getOrElse('EXTERNAL_HOST', 'localhost:3000');
+  const host = config.getOrElse('EXTERNAL_HOST', 'localhost:3001');
 
   return {
     routePrefix: path,

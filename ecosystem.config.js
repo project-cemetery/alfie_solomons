@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'mr-solomons',
-      script: 'index.js',
+      script: 'app/index.js',
       instances: 'max',
       autorestart: true,
       watch: false,

@@ -1,4 +1,4 @@
-const { container } = require('./container');
+const { container } = require('./app/container');
 
 const client = container.resolve('dbClient');
 
