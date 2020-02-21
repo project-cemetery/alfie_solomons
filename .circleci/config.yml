@@ -43,9 +43,9 @@ workflows:
           container_name: "solomons"
           post_install_script: "yarn evolutions -y"
           filters:
-            branches:
-              only: master
             tags:
               only: /.*/
+            branches:
+              ignore: /.*/
           requires:
             - docker/build_push
