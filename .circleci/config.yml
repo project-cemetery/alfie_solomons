@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   soda-lint: checkmoney/soda-lint@1.0.2
-  docker: checkmoney/docker@1.0.1
+  docker: checkmoney/docker@1.0.2
   jest: checkmoney/jest@1.0.0
   deploy: checkmoney/deploy@1.0.14
 workflows:
