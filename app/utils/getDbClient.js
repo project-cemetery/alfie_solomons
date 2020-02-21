@@ -7,7 +7,7 @@ const getDbClient = ({ config }) => {
     ? () => undefined
     : () => ({
         ca: readFileSync(
-          join(__dirname, '..', '.secure', 'ca-certificate.txt'),
+          join(__dirname, '..', '..', '.secure', 'ca-certificate.txt'),
         ),
       });
 
