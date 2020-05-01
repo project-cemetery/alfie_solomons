@@ -43,6 +43,10 @@ class ConvertController {
               description:
                 'String representation of converted money amount in penny (money * 100)',
             },
+            accurate: {
+              type: 'boolean',
+              description: 'Is this result accurate?',
+            },
           },
         },
         400: {
@@ -74,6 +78,7 @@ class ConvertController {
       if (cachedValue) {
         return {
           result: cachedValue,
+          accurate: true,
         };
       }
 
@@ -96,6 +101,7 @@ class ConvertController {
 
       return {
         result: value.toString(),
+        accurate: Boolean(accurate),
       };
     });
 
