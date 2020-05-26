@@ -34,6 +34,8 @@
     "access": "public"
   },
   "scripts": {
+    "release": "yarn s release",
+    "dev": "NODE_ENV=development node src/index.js",
     "s": "yarn soda"
   }
 }
