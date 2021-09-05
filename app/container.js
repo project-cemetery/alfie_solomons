@@ -1,5 +1,4 @@
 const awilix = require("awilix");
-const { Cache, InMemoryProvider } = require("@solid-soda/cache");
 
 const { ConvertController } = require("./presentation/v1/ConvertController");
 const { ErrorHandler } = require("./presentation/ErrorHandler");
@@ -41,7 +40,6 @@ container.register({
   config: awilix.asFunction(getConfig),
   dbClient: awilix.asFunction(getDbClient),
   queryBuilder: awilix.asFunction(getQueryBuilder),
-  cache: awilix.asValue(new Cache(new InMemoryProvider())),
 });
 
 module.exports = {

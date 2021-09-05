@@ -3,10 +3,9 @@ const { isValid, parseISO } = require("date-fns");
 const { InvalidQueryException } = require("../error/InvalidQueryException");
 
 class ConvertController {
-  constructor({ moneyConverter, errorHandler, cache }) {
+  constructor({ moneyConverter, errorHandler }) {
     this.moneyConverter = moneyConverter;
     this.errorHandler = errorHandler;
-    this.cache = cache;
   }
 
   docs = {
