@@ -1,4 +1,4 @@
-FROM node:12-alpine
+FROM node:14.17.0-alpine
 
 COPY package.json package.json
 COPY yarn.lock yarn.lock
@@ -9,6 +9,6 @@ RUN yarn --production
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 3001
 
 CMD ["node", "./app/index.js"]
