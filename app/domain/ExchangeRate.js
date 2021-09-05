@@ -1,8 +1,8 @@
 export class ExchangeRate {
-  constructor(from, to, collectAt, rate, source) {
+  constructor(from, to, date, rate, source) {
     this.from = from;
     this.to = to;
-    this.collectAt = collectAt;
+    this.date = date;
     this.rate = rate;
     this.source = source;
   }

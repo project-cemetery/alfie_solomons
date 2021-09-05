@@ -1,4 +1,4 @@
-import awilix from "awilix";
+import * as awilix from "awilix";
 
 import { ConvertController } from "./presentation/v1/ConvertController.js";
 import { ErrorHandler } from "./presentation/ErrorHandler.js";

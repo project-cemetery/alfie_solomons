@@ -5,13 +5,13 @@ export class ExchangeRateModel extends ExchangeRate {
     return new ExchangeRateModel(
       this.to,
       this.from,
-      this.collectAt,
+      this.date,
       1 / this.rate
     );
   }
 
-  static fromObject({ from, to, collectAt, rate, source }) {
-    return new ExchangeRateModel(from, to, collectAt, rate, source);
+  static fromObject({ from, to, date, rate, source }) {
+    return new ExchangeRateModel(from, to, date, rate, source);
   }
 
   static TABLE = "exchange_rate";

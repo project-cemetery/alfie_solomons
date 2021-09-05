@@ -4,12 +4,12 @@ export async function up(knex) {
     .createTable("exchange_rate", (table) => {
       table.string("from", 3);
       table.string("to", 3);
-      table.date("collectAt");
+      table.date("date");
       table.double("rate");
 
       table.string("source");
 
-      table.primary(["from", "to", "collectAt"], {
+      table.primary(["from", "to", "date"], {
         constraintName: "PK_exchange_rate",
       });
     });

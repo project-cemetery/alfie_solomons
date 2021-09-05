@@ -36,7 +36,7 @@ export class ConvertController {
               type: "string",
             },
             to: { type: "string" },
-            collectAt: { type: "string", format: "date" },
+            date: { type: "string", format: "date" },
             rate: { type: "number" },
             source: { type: "string" },
             accurate: {

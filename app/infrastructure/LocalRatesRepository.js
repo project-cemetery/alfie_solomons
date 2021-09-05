@@ -12,14 +12,14 @@ export class LocalRatesRepository {
     const [firstAfter, lastBefore] = await Promise.all([
       this.queryBuilder
         .where({ from, to })
-        .andWhere("collectAt", ">=", date.toISOString())
-        .orderBy("collectAt", "desc")
+        .andWhere("date", ">=", date.toISOString())
+        .orderBy("date", "desc")
         .first()
         .table(ExchangeRateModel.TABLE),
       this.queryBuilder
         .where({ from, to })
-        .andWhere("collectAt", "<", date.toISOString())
-        .orderBy("collectAt", "asc")
+        .andWhere("date", "<", date.toISOString())
+        .orderBy("date", "asc")
         .first()
         .table(ExchangeRateModel.TABLE),
     ]);
@@ -37,10 +37,10 @@ export class LocalRatesRepository {
     }
 
     const afterDistance = Math.abs(
-      differenceInDays(firstAfter.collectAt, date)
+      differenceInDays(firstAfter.date, date)
     );
     const beforeDistance = Math.abs(
-      differenceInDays(lastBefore.collectAt, date)
+      differenceInDays(lastBefore.date, date)
     );
 
     const nearest = afterDistance > beforeDistance ? lastBefore : firstAfter;
@@ -70,7 +70,7 @@ export class LocalRatesRepository {
 
     const rate = await this.queryBuilder
       .where({ from, to })
-      .whereBetween("collectAt", period)
+      .whereBetween("date", period)
       .first()
       .table(ExchangeRateModel.TABLE);
 

@@ -53,7 +53,7 @@ export class ExchangeRatesApiClient {
           if (!data.success) {
             throw new Error(
               `${data.error.code}: ${data.error.type}: ${
-                data.error.info ?? "Something went wrong"
+                data.error.info || "Something went wrong"
               }`
             );
           }
