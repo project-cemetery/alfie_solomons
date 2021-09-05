@@ -1,10 +1,10 @@
-const { differenceInDays } = require("date-fns");
-const { timeout } = require("promise-timeout");
-const { isNull } = require("lodash");
+import { differenceInDays } from "date-fns";
+import { timeout } from "promise-timeout";
+import { isNull } from "lodash-es";
 
-const { ExchangeRateModel } = require("./model/ExchangeRateModel");
+import { ExchangeRateModel } from "./model/ExchangeRateModel.js";
 
-class RemoteRatesRepository {
+export class RemoteRatesRepository {
   constructor({ mannyApiClient, exchangeRatesApiClient }) {
     this.clients = [mannyApiClient, exchangeRatesApiClient];
   }
@@ -67,7 +67,3 @@ class RemoteRatesRepository {
     return timeout(promise, 1000);
   };
 }
-
-module.exports = {
-  RemoteRatesRepository,
-};

@@ -291,10 +291,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-0.14.0.tgz#9fb3a3cf3132328151f353de4632e01e52102bea"
   integrity sha512-9NET910DNaIPngYnLLPeg+Ogzqsi9uM4mSboU5y6p8S5DzMTVEsJZrawi+BoDNUVBa2DhJqQYUFvMDfgU062LQ==
 
-"@solid-soda/config@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@solid-soda/config/-/config-2.0.0.tgz#e3343ca51345e437946585c8ac99c2f044abd578"
-  integrity sha512-jJ3Q7iyNGrbekZm+h4Bx39S4jPRfCALEOKsm/dSZpFMI0jf0nxCOsFd6/kcGZDVonpo/68Rz9TEe19cx+ephUw==
+"@solid-soda/config@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@solid-soda/config/-/config-2.2.0.tgz#fd3de55228a25a2d60788e4bddd38cca22a5e093"
+  integrity sha512-16o1HMVuDJlDcgq1dboRb5b/t8+eVfYTZ6vZ+tyBsJUGkXGNap1hxSpjC9Tl9fsF3IRq5U+G1Cj8+cci7Blnig==
   dependencies:
     change-case "^3.1.0"
     dotenv "^6.2.0"
@@ -2860,6 +2860,11 @@ locate-path@^3.0.0:
   dependencies:
     p-locate "^3.0.0"
     path-exists "^3.0.0"
+
+lodash-es@^4.17.21:
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
+  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
 
 lodash.sortby@^4.7.0:
   version "4.7.0"

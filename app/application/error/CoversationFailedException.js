@@ -1,4 +1,4 @@
-class CoversationFailedException extends Error {
+export class CoversationFailedException extends Error {
   constructor(from, to, date) {
     super(
       `Conversation from ${from} to ${to} for ${date.toDateString()} failed`
@@ -9,7 +9,3 @@ class CoversationFailedException extends Error {
     this.date = date;
   }
 }
-
-module.exports = {
-  CoversationFailedException,
-};

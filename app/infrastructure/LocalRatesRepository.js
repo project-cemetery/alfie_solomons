@@ -1,9 +1,9 @@
-const { startOfDay, endOfDay } = require('date-fns');
-const { differenceInDays } = require('date-fns');
+import { startOfDay, endOfDay } from "date-fns";
+import { differenceInDays } from "date-fns";
 
-const { ExchangeRateModel } = require('./model/ExchangeRateModel');
+import { ExchangeRateModel } from "./model/ExchangeRateModel.js";
 
-class LocalRatesRepository {
+export class LocalRatesRepository {
   constructor({ queryBuilder }) {
     this.queryBuilder = queryBuilder;
   }
@@ -12,14 +12,14 @@ class LocalRatesRepository {
     const [firstAfter, lastBefore] = await Promise.all([
       this.queryBuilder
         .where({ from, to })
-        .andWhere('collectAt', '>=', date.toISOString())
-        .orderBy('collectAt', 'desc')
+        .andWhere("collectAt", ">=", date.toISOString())
+        .orderBy("collectAt", "desc")
         .first()
         .table(ExchangeRateModel.TABLE),
       this.queryBuilder
         .where({ from, to })
-        .andWhere('collectAt', '<', date.toISOString())
-        .orderBy('collectAt', 'asc')
+        .andWhere("collectAt", "<", date.toISOString())
+        .orderBy("collectAt", "asc")
         .first()
         .table(ExchangeRateModel.TABLE),
     ]);
@@ -37,10 +37,10 @@ class LocalRatesRepository {
     }
 
     const afterDistance = Math.abs(
-      differenceInDays(firstAfter.collectAt, date),
+      differenceInDays(firstAfter.collectAt, date)
     );
     const beforeDistance = Math.abs(
-      differenceInDays(lastBefore.collectAt, date),
+      differenceInDays(lastBefore.collectAt, date)
     );
 
     const nearest = afterDistance > beforeDistance ? lastBefore : firstAfter;
@@ -70,7 +70,7 @@ class LocalRatesRepository {
 
     const rate = await this.queryBuilder
       .where({ from, to })
-      .whereBetween('collectAt', period)
+      .whereBetween("collectAt", period)
       .first()
       .table(ExchangeRateModel.TABLE);
 
@@ -81,7 +81,3 @@ class LocalRatesRepository {
     return null;
   };
 }
-
-module.exports = {
-  LocalRatesRepository,
-};

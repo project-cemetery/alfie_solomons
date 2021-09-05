@@ -1,9 +1,7 @@
-const {
-  CoversationFailedException,
-} = require('../application/error/CoversationFailedException');
-const { InvalidQueryException } = require('./error/InvalidQueryException');
+import { CoversationFailedException } from "../application/error/CoversationFailedException.js";
+import { InvalidQueryException } from "./error/InvalidQueryException.js";
 
-class ErrorHandler {
+export class ErrorHandler {
   invoke = async (reply, endpoint) => {
     try {
       const response = await endpoint();
@@ -44,7 +42,3 @@ class ErrorHandler {
     };
   };
 }
-
-module.exports = {
-  ErrorHandler,
-};

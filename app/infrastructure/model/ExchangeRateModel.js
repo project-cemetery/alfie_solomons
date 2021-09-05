@@ -1,6 +1,6 @@
-const { ExchangeRate } = require("../../domain/ExchangeRate");
+import { ExchangeRate } from "../../domain/ExchangeRate.js";
 
-class ExchangeRateModel extends ExchangeRate {
+export class ExchangeRateModel extends ExchangeRate {
   reverse() {
     return new ExchangeRateModel(
       this.to,
@@ -16,7 +16,3 @@ class ExchangeRateModel extends ExchangeRate {
 
   static TABLE = "exchange_rate";
 }
-
-module.exports = {
-  ExchangeRateModel,
-};

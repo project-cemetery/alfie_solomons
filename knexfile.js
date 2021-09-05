@@ -1,8 +1,8 @@
-const { container } = require("./app/container");
+import { container } from "./app/container.js";
 
 const dbClient = container.resolve("dbClient");
 
-module.exports = {
+export default {
   client: "pg",
   connection: dbClient.connectionParameters,
 

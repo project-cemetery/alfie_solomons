@@ -1,8 +1,8 @@
-const { isValid, parseISO } = require("date-fns");
+import { isValid, parseISO } from "date-fns";
 
-const { InvalidQueryException } = require("../error/InvalidQueryException");
+import { InvalidQueryException } from "../error/InvalidQueryException.js";
 
-class ConvertController {
+export class ConvertController {
   constructor({ moneyConverter, errorHandler }) {
     this.moneyConverter = moneyConverter;
     this.errorHandler = errorHandler;
@@ -95,7 +95,3 @@ class ConvertController {
     }
   };
 }
-
-module.exports = {
-  ConvertController,
-};

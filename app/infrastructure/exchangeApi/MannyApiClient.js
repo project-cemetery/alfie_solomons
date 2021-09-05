@@ -1,10 +1,9 @@
-const axios = require("axios");
-const { format, differenceInDays } = require("date-fns");
-const { isEmpty } = require("lodash");
+import axios from "axios";
+import { format, differenceInDays } from "date-fns";
 
-const { identity } = require("../../helpers/identity");
+import { identity } from "../../helpers/identity.js";
 
-class MannyApiClient {
+export class MannyApiClient {
   constructor({ config }) {
     this._apiKey = config.getOrThrow("MANNY_API_KEY");
 
@@ -63,11 +62,7 @@ class MannyApiClient {
       .then((response) => response.data)
       .then((data) => data.results)
       .then((results) => results[query])
-      .then(mapper)
       .then((rate) => rate.val)
+      .then(mapper);
   };
 }
-
-module.exports = {
-  MannyApiClient,
-};

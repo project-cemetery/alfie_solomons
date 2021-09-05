@@ -1,8 +1,6 @@
-const {
-  CoversationFailedException,
-} = require("./error/CoversationFailedException");
+import { CoversationFailedException } from "./error/CoversationFailedException.js";
 
-class MoneyConverter {
+export class MoneyConverter {
   constructor({
     localRatesRepository,
     localRatesSaver,
@@ -62,7 +60,3 @@ class MoneyConverter {
     return { ...rate, execution: "remote" };
   };
 }
-
-module.exports = {
-  MoneyConverter,
-};

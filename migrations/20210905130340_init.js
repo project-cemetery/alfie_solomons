@@ -1,4 +1,4 @@
-exports.up = async function (knex) {
+export async function up(knex) {
   await knex.schema
     .withSchema("public")
     .createTable("exchange_rate", (table) => {
@@ -13,8 +13,8 @@ exports.up = async function (knex) {
         constraintName: "PK_exchange_rate",
       });
     });
-};
+}
 
-exports.down = async function (knex) {
+export async function down(knex) {
   await knex.schema.withSchema("public").dropTable("exchange_rate");
-};
+}

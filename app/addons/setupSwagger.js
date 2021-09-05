@@ -1,4 +1,4 @@
-const setupSwagger = (path, config) => {
+export const setupSwagger = (path, config) => {
   const host = config.getOrElse("EXTERNAL_HOST", "localhost:3001");
 
   return {
@@ -15,8 +15,4 @@ const setupSwagger = (path, config) => {
       produces: ["application/json"],
     },
   };
-};
-
-module.exports = {
-  setupSwagger,
 };

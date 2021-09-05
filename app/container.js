@@ -1,24 +1,16 @@
-const awilix = require("awilix");
+import awilix from "awilix";
 
-const { ConvertController } = require("./presentation/v1/ConvertController");
-const { ErrorHandler } = require("./presentation/ErrorHandler");
-const { MoneyConverter } = require("./application/MoneyConverter");
-const {
-  LocalRatesRepository,
-} = require("./infrastructure/LocalRatesRepository");
-const { LocalRatesSaver } = require("./infrastructure/LocalRatesSaver");
-const {
-  RemoteRatesRepository,
-} = require("./infrastructure/RemoteRatesRepository");
-const {
-  MannyApiClient,
-} = require("./infrastructure/exchangeApi/MannyApiClient");
-const {
-  ExchangeRatesApiClient,
-} = require("./infrastructure/exchangeApi/ExchangeRatesApiClient");
-const { getConfig } = require("./utils/getConfig");
-const { getDbClient } = require("./utils/getDbClient");
-const { getQueryBuilder } = require("./utils/getQueryBuilder");
+import { ConvertController } from "./presentation/v1/ConvertController.js";
+import { ErrorHandler } from "./presentation/ErrorHandler.js";
+import { MoneyConverter } from "./application/MoneyConverter.js";
+import { LocalRatesRepository } from "./infrastructure/LocalRatesRepository.js";
+import { LocalRatesSaver } from "./infrastructure/LocalRatesSaver.js";
+import { RemoteRatesRepository } from "./infrastructure/RemoteRatesRepository.js";
+import { MannyApiClient } from "./infrastructure/exchangeApi/MannyApiClient.js";
+import { ExchangeRatesApiClient } from "./infrastructure/exchangeApi/ExchangeRatesApiClient.js";
+import { getConfig } from "./utils/getConfig.js";
+import { getDbClient } from "./utils/getDbClient.js";
+import { getQueryBuilder } from "./utils/getQueryBuilder.js";
 
 // Create the container and set the injectionMode to PROXY (which is also the default).
 const container = awilix.createContainer({
@@ -42,6 +34,4 @@ container.register({
   queryBuilder: awilix.asFunction(getQueryBuilder),
 });
 
-module.exports = {
-  container,
-};
+export { container };

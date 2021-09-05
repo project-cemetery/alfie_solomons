@@ -1,7 +1,7 @@
-const axios = require("axios");
-const { format } = require("date-fns");
+import axios from "axios";
+import { format } from "date-fns";
 
-class ExchangeRatesApiClient {
+export class ExchangeRatesApiClient {
   constructor({ config }) {
     this._apiKey = config.getOrThrow("EXCHANGE_RATES_API_KEY");
 
@@ -62,7 +62,7 @@ class ExchangeRatesApiClient {
         })
         .then((rates) => rates[currecy])
         .then((rate) => parseFloat(rate));
-    }
+    };
 
     const [eurTo, eurFrom] = await Promise.all([
       rateFromEuroToAnything(to),
@@ -72,7 +72,3 @@ class ExchangeRatesApiClient {
     return eurFrom / eurTo;
   };
 }
-
-module.exports = {
-  ExchangeRatesApiClient,
-};

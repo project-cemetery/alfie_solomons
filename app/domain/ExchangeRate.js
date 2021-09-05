@@ -1,4 +1,4 @@
-class ExchangeRate {
+export class ExchangeRate {
   constructor(from, to, collectAt, rate, source) {
     this.from = from;
     this.to = to;
@@ -7,7 +7,3 @@ class ExchangeRate {
     this.source = source;
   }
 }
-
-module.exports = {
-  ExchangeRate,
-};

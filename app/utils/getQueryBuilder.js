@@ -1,14 +1,10 @@
-const knex = require("knex");
+import knex from "knex";
 
-const getQueryBuilder = ({ dbClient }) => {
+export const getQueryBuilder = ({ dbClient }) => {
   const qb = knex({
     client: "pg",
     connection: dbClient.connectionParameters,
   });
 
   return qb;
-};
-
-module.exports = {
-  getQueryBuilder,
 };

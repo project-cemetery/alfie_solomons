@@ -1,8 +1,8 @@
-const { Client } = require("pg");
-const { readFileSync } = require("fs");
-const { join } = require("path");
+import PG from "pg";
+import { readFileSync } from "fs";
+import { join } from "path";
 
-const getDbClient = ({ config }) => {
+export const getDbClient = ({ config }) => {
   const getSslConfig = config.isDev()
     ? () => undefined
     : () => ({
@@ -11,7 +11,7 @@ const getDbClient = ({ config }) => {
         ),
       });
 
-  return new Client({
+  return new PG.Client({
     user: config.getOrThrow("DB_USER"),
     database: config.getOrThrow("DB_NAME"),
     password: config.getOrThrow("DB_PASSWORD"),
@@ -19,8 +19,4 @@ const getDbClient = ({ config }) => {
     host: config.getOrThrow("DB_HOST"),
     ssl: getSslConfig(),
   });
-};
-
-module.exports = {
-  getDbClient,
 };
