@@ -1,6 +1,6 @@
-const { isValid, parseISO } = require('date-fns');
+const { isValid, parseISO } = require("date-fns");
 
-const { InvalidQueryException } = require('../error/InvalidQueryException');
+const { InvalidQueryException } = require("../error/InvalidQueryException");
 
 class ConvertController {
   constructor({ moneyConverter, errorHandler, cache }) {
@@ -11,54 +11,54 @@ class ConvertController {
 
   docs = {
     schema: {
-      description: 'Convert money from one currency to another for exact date',
-      summary: 'Convert money',
+      description: "Convert money from one currency to another for exact date",
+      summary: "Convert money",
       query: {
         amount: {
-          type: 'string',
+          type: "string",
           description:
-            'String representation of money amount in penny (money * 100)',
+            "String representation of money amount in penny (money * 100)",
         },
         from: {
-          type: 'string',
-          description: 'Original currency',
+          type: "string",
+          description: "Original currency",
         },
         to: {
-          type: 'string',
-          description: 'Target currency',
+          type: "string",
+          description: "Target currency",
         },
         date: {
-          type: 'string',
-          format: 'date',
-          description: 'Date of transaction',
+          type: "string",
+          format: "date",
+          description: "Date of transaction",
         },
       },
       response: {
         200: {
-          description: 'Successful response',
-          type: 'object',
+          description: "Successful response",
+          type: "object",
           properties: {
             result: {
-              type: 'string',
+              type: "string",
               description:
-                'String representation of converted money amount in penny (money * 100)',
+                "String representation of converted money amount in penny (money * 100)",
             },
             accurate: {
-              type: 'boolean',
-              description: 'Is this result accurate?',
+              type: "boolean",
+              description: "Is this result accurate?",
             },
           },
         },
         400: {
-          description: 'Invalid request',
-          type: 'object',
+          description: "Invalid request",
+          type: "object",
           properties: {
             message: {
-              type: 'string',
-              description: 'Error message',
+              type: "string",
+              description: "Error message",
             },
             query: {
-              type: 'object',
+              type: "object",
             },
           },
         },
@@ -72,7 +72,7 @@ class ConvertController {
 
       const { from, to, amount, date } = query;
       const [cachedValue, saveToCache] = await this.cache.useCache(
-        `${from}_${to}_${amount}_${date}`,
+        `${from}_${to}_${amount}_${date}`
       );
 
       if (cachedValue) {
@@ -92,7 +92,7 @@ class ConvertController {
       const { value, accurate } = await this.moneyConverter.convert(
         money,
         targetCurrency,
-        when,
+        when
       );
 
       if (accurate) {
@@ -105,7 +105,7 @@ class ConvertController {
       };
     });
 
-  _throwUnlessValid = async query => {
+  _throwUnlessValid = async (query) => {
     const requestIsValid = () => {
       try {
         const { from, to, amount, date } = query;

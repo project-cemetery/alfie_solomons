@@ -1,8 +1,8 @@
-const { differenceInDays } = require('date-fns');
-const { timeout } = require('promise-timeout');
-const { Option } = require('nanoption');
+const { differenceInDays } = require("date-fns");
+const { timeout } = require("promise-timeout");
+const { Option } = require("nanoption");
 
-const { ExchangeRateModel } = require('./model/ExchangeRateModel');
+const { ExchangeRateModel } = require("./model/ExchangeRateModel");
 
 class RemoteRatesRepository {
   constructor({ mannyApiClient, exchangeRatesApiClient }) {
@@ -32,7 +32,7 @@ class RemoteRatesRepository {
       // await in loop because we want try sequentially get rate
       // eslint-disable-next-line no-await-in-loop
       const rate = await this._fetchWithTimeout(
-        client.getExchangeRate(from, to),
+        client.getExchangeRate(from, to)
       );
 
       if (rate.nonEmpty()) {
@@ -48,7 +48,7 @@ class RemoteRatesRepository {
       // await in loop because we want try sequentially get rate
       // eslint-disable-next-line no-await-in-loop
       const rate = await this._fetchWithTimeout(
-        client.getHistoryExchangeRate(from, to, when),
+        client.getHistoryExchangeRate(from, to, when)
       );
 
       if (rate.nonEmpty()) {
@@ -59,7 +59,7 @@ class RemoteRatesRepository {
     return Option.of(null);
   };
 
-  _fetchWithTimeout = async promise => {
+  _fetchWithTimeout = async (promise) => {
     return timeout(promise, 1000).catch(() => Option.of(null));
   };
 }

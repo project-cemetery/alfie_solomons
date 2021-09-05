@@ -1,4 +1,4 @@
-const identity = v => v;
+const identity = (v) => v;
 
 module.exports = {
   identity,

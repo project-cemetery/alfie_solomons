@@ -1,8 +1,8 @@
-const knex = require('knex');
+const knex = require("knex");
 
 const getQueryBuilder = ({ dbClient }) => {
   const qb = knex({
-    client: 'pg',
+    client: "pg",
     connection: dbClient.connectionParameters,
   });
 

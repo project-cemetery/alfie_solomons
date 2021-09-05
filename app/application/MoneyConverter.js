@@ -1,6 +1,6 @@
 const {
   CoversationFailedException,
-} = require('./error/CoversationFailedException');
+} = require("./error/CoversationFailedException");
 
 class MoneyConverter {
   constructor({
@@ -24,7 +24,7 @@ class MoneyConverter {
       rate = await this.localRatesRepository.findNearest(
         currency,
         targetCurrency,
-        date,
+        date
       );
     }
 

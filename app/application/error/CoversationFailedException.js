@@ -1,7 +1,7 @@
 class CoversationFailedException extends Error {
   constructor(from, to, date) {
     super(
-      `Conversation from ${from} to ${to} for ${date.toDateString()} failed`,
+      `Conversation from ${from} to ${to} for ${date.toDateString()} failed`
     );
 
     this.from = from;

@@ -1,12 +1,12 @@
-const axios = require('axios');
-const { format, differenceInDays } = require('date-fns');
-const { Option } = require('nanoption');
+const axios = require("axios");
+const { format, differenceInDays } = require("date-fns");
+const { Option } = require("nanoption");
 
-const { identity } = require('../../helpers/identity');
+const { identity } = require("../../helpers/identity");
 
 class MannyApiClient {
   constructor({ config }) {
-    this._apiKey = config.getOrThrow('MANNY_API_KEY');
+    this._apiKey = config.getOrThrow("MANNY_API_KEY");
 
     this._simplePromises = {};
     this._historyPromises = {};
@@ -31,7 +31,7 @@ class MannyApiClient {
       return Promise.resolve(Option.of(null));
     }
 
-    const date = format(when, 'yyyy-MM-dd');
+    const date = format(when, "yyyy-MM-dd");
     const query = `${from}_${to}`;
 
     const fullQuery = `${query}_${date}`;
@@ -42,7 +42,7 @@ class MannyApiClient {
           query,
           date,
         },
-        dateData => dateData[date],
+        (dateData) => dateData[date]
       );
     }
 
@@ -50,20 +50,20 @@ class MannyApiClient {
   };
 
   _request = async ({ query, date }, mapper = identity) => {
-    const API_URL = 'https://free.currencyconverterapi.com/api/v6/convert';
+    const API_URL = "https://free.currencyconverterapi.com/api/v6/convert";
 
-    const dateParam = !!date ? `&date=${date}` : '';
+    const dateParam = !!date ? `&date=${date}` : "";
 
     const requestUrl = `${API_URL}?q=${query}&apiKey=${this._apiKey}${dateParam}`;
 
     return axios
       .get(requestUrl)
-      .then(response => response.data)
-      .then(data => data.results)
-      .then(results => results[query])
+      .then((response) => response.data)
+      .then((data) => data.results)
+      .then((results) => results[query])
       .then(mapper)
-      .then(rate => parseFloat(rate.val))
-      .then(rate => Option.of(rate))
+      .then((rate) => parseFloat(rate.val))
+      .then((rate) => Option.of(rate))
       .catch(() => Option.of(null));
   };
 }

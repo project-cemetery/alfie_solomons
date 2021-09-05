@@ -1,6 +1,6 @@
-const axios = require('axios');
-const { format } = require('date-fns');
-const { Option } = require('nanoption');
+const axios = require("axios");
+const { format } = require("date-fns");
+const { Option } = require("nanoption");
 
 class ExchangeRatesApiClient {
   constructor() {
@@ -19,7 +19,7 @@ class ExchangeRatesApiClient {
   };
 
   getHistoryExchangeRate = async (from, to, when) => {
-    const date = format(when, 'yyyy-MM-dd');
+    const date = format(when, "yyyy-MM-dd");
     const query = `${from}_${to}`;
 
     const fullQuery = `${query}_${date}`;
@@ -36,19 +36,19 @@ class ExchangeRatesApiClient {
   };
 
   _request = async ({ from, to, date }) => {
-    const API_URL = 'https://api.exchangeratesapi.io';
+    const API_URL = "https://api.exchangeratesapi.io";
 
-    const dateParam = !!date ? `${date}` : 'latest';
+    const dateParam = !!date ? `${date}` : "latest";
 
     const requestUrl = `${API_URL}/${dateParam}?base=${from}&symbols=${to}`;
 
     return axios
       .get(requestUrl)
-      .then(response => response.data)
-      .then(data => data.rates)
-      .then(rates => rates[to])
-      .then(rate => parseFloat(rate))
-      .then(rate => Option.of(rate))
+      .then((response) => response.data)
+      .then((data) => data.rates)
+      .then((rates) => rates[to])
+      .then((rate) => parseFloat(rate))
+      .then((rate) => Option.of(rate))
       .catch(() => Option.of(null));
   };
 }
