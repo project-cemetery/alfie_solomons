@@ -31,4 +31,4 @@ Now, application listen `3001` port in container, you can use it.
 4. Pass PostgreSQL connection params and api-key to `.env`
 5. Run application by `yarn dev`
 
-Now, you can find docs and playground at [localhost:3001/v1/docs](http://localhost:3001/v1/docs).
+Now, you can find docs and playground at [localhost:3001/docs](http://localhost:3001/docs).
