@@ -7,10 +7,10 @@ import { setupSwagger } from "./addons/setupSwagger.js";
 const fastify = initFastify({ logger: false });
 
 const config = container.resolve("config");
-fastify.register(swagger, setupSwagger("/v1/docs", config));
+fastify.register(swagger, setupSwagger("/docs", config));
 
-const convertController = container.resolve("convertController");
-fastify.get("/v1/convert", convertController.docs, convertController.handle);
+const httpController = container.resolve("httpController");
+fastify.get("/rate", httpController.docs, httpController.handle);
 
 try {
   fastify.ready((err) => {

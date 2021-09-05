@@ -11,9 +11,23 @@ export class MannyApiClient {
     this._historyPromises = {};
   }
 
-  name = "MannyApiClient";
+  #NAME = "MannyApiClient";
 
-  getExchangeRate = async (from, to) => {
+  find = async (from, to, date) => {
+    const MIN_DAY_FOR_HISTORY_TRANSACTION = 2;
+
+    const rateIsOld =
+      Math.abs(differenceInDays(date, new Date())) >
+      MIN_DAY_FOR_HISTORY_TRANSACTION;
+
+    const rate = await (rateIsOld
+      ? this.#getHistoryExchangeRate(from, to, date)
+      : this.#getExchangeRate(from, to));
+
+    return { rate, source: this.#NAME };
+  };
+
+  #getExchangeRate = async (from, to) => {
     const query = `${from}_${to}`;
 
     if (!this._simplePromises[query]) {
@@ -23,13 +37,13 @@ export class MannyApiClient {
     return this._simplePromises[query];
   };
 
-  getHistoryExchangeRate = async (from, to, when) => {
+  #getHistoryExchangeRate = async (from, to, when) => {
     const MAX_RATE_AGE_IN_DAYS = 360;
 
     // Api not respond for date older than MAX_RATE_AGE_IN_DAYS
     // Blank-shot-requests not successful, but spend the limit
     if (Math.abs(differenceInDays(when, new Date())) > MAX_RATE_AGE_IN_DAYS) {
-      return Promise.resolve(null);
+      return Promise.reject(new Error("Too old"));
     }
 
     const date = format(when, "yyyy-MM-dd");

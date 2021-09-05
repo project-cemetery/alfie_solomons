@@ -1,17 +1,12 @@
 import { CoversationFailedException } from "./error/CoversationFailedException.js";
 
-export class MoneyConverter {
-  constructor({
-    localRatesRepository,
-    localRatesSaver,
-    remoteRatesRepository,
-  }) {
+export class ExchangeRateFinder {
+  constructor({ localRatesRepository, remoteRatesRepository }) {
     this.localRatesRepository = localRatesRepository;
-    this.localRatesSaver = localRatesSaver;
     this.remoteRatesRepository = remoteRatesRepository;
   }
 
-  convert = async (sourceCurrency, targetCurrency, date) => {
+  find = async (sourceCurrency, targetCurrency, date) => {
     let accurate = true;
     let rate = await this.#findAccurateRate(
       sourceCurrency,
@@ -51,7 +46,7 @@ export class MoneyConverter {
 
     rate = await this.remoteRatesRepository.find(from, to, date);
 
-    await this.localRatesSaver.save(rate).catch((e) => {
+    await this.localRatesRepository.save(rate).catch((e) => {
       // okay, we can't save rate to local registry
       // TODO: logging
       console.error(e);

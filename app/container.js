@@ -1,10 +1,9 @@
 import * as awilix from "awilix";
 
-import { ConvertController } from "./presentation/v1/ConvertController.js";
+import { HttpController } from "./presentation/HttpController.js";
 import { ErrorHandler } from "./presentation/ErrorHandler.js";
-import { MoneyConverter } from "./application/MoneyConverter.js";
+import { ExchangeRateFinder } from "./application/ExchangeRateFinder.js";
 import { LocalRatesRepository } from "./infrastructure/LocalRatesRepository.js";
-import { LocalRatesSaver } from "./infrastructure/LocalRatesSaver.js";
 import { RemoteRatesRepository } from "./infrastructure/RemoteRatesRepository.js";
 import { MannyApiClient } from "./infrastructure/exchangeApi/MannyApiClient.js";
 import { ExchangeRatesApiClient } from "./infrastructure/exchangeApi/ExchangeRatesApiClient.js";
@@ -19,13 +18,12 @@ const container = awilix.createContainer({
 
 container.register({
   // presentation
-  convertController: awilix.asClass(ConvertController),
+  httpController: awilix.asClass(HttpController),
   errorHandler: awilix.asClass(ErrorHandler),
   //application
-  moneyConverter: awilix.asClass(MoneyConverter),
+  exchangeRateFinder: awilix.asClass(ExchangeRateFinder),
   // infrastructure
   localRatesRepository: awilix.asClass(LocalRatesRepository),
-  localRatesSaver: awilix.asClass(LocalRatesSaver),
   remoteRatesRepository: awilix.asClass(RemoteRatesRepository),
   mannyApiClient: awilix.asClass(MannyApiClient),
   exchangeRatesApiClient: awilix.asClass(ExchangeRatesApiClient),

@@ -1,10 +1,10 @@
 import { isValid, parseISO } from "date-fns";
 
-import { InvalidQueryException } from "../error/InvalidQueryException.js";
+import { InvalidQueryException } from "./error/InvalidQueryException.js";
 
-export class ConvertController {
-  constructor({ moneyConverter, errorHandler }) {
-    this.moneyConverter = moneyConverter;
+export class HttpController {
+  constructor({ exchangeRateFinder, errorHandler }) {
+    this.exchangeRateFinder = exchangeRateFinder;
     this.errorHandler = errorHandler;
   }
 
@@ -72,7 +72,7 @@ export class ConvertController {
       const targetCurrency = to.toUpperCase();
       const when = parseISO(date);
 
-      return this.moneyConverter.convert(sourceCurrency, targetCurrency, when);
+      return this.exchangeRateFinder.find(sourceCurrency, targetCurrency, when);
     });
 
   #throwUnlessValid = async (query) => {

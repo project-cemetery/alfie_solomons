@@ -1,12 +1,18 @@
 import { startOfDay, endOfDay } from "date-fns";
 import { differenceInDays } from "date-fns";
 
-import { ExchangeRateModel } from "./model/ExchangeRateModel.js";
+import { ExchangeRate } from "../application/ExchangeRate.js";
 
 export class LocalRatesRepository {
   constructor({ queryBuilder }) {
     this.queryBuilder = queryBuilder;
   }
+
+  #TABLE = "exchange_rate";
+
+  save = async (rate) => {
+    await this.queryBuilder.insert(rate).table(this.#TABLE);
+  };
 
   findNearest = async (from, to, date) => {
     const [firstAfter, lastBefore] = await Promise.all([
@@ -15,13 +21,13 @@ export class LocalRatesRepository {
         .andWhere("date", ">=", date.toISOString())
         .orderBy("date", "desc")
         .first()
-        .table(ExchangeRateModel.TABLE),
+        .table(this.#TABLE),
       this.queryBuilder
         .where({ from, to })
         .andWhere("date", "<", date.toISOString())
         .orderBy("date", "asc")
         .first()
-        .table(ExchangeRateModel.TABLE),
+        .table(this.#TABLE),
     ]);
 
     if (!firstAfter && !lastBefore) {
@@ -36,12 +42,8 @@ export class LocalRatesRepository {
       return firstAfter;
     }
 
-    const afterDistance = Math.abs(
-      differenceInDays(firstAfter.date, date)
-    );
-    const beforeDistance = Math.abs(
-      differenceInDays(lastBefore.date, date)
-    );
+    const afterDistance = Math.abs(differenceInDays(firstAfter.date, date));
+    const beforeDistance = Math.abs(differenceInDays(lastBefore.date, date));
 
     const nearest = afterDistance > beforeDistance ? lastBefore : firstAfter;
 
@@ -72,10 +74,10 @@ export class LocalRatesRepository {
       .where({ from, to })
       .whereBetween("date", period)
       .first()
-      .table(ExchangeRateModel.TABLE);
+      .table(this.#TABLE);
 
     if (rate) {
-      return ExchangeRateModel.fromObject(rate);
+      return ExchangeRate.fromObject(rate);
     }
 
     return null;

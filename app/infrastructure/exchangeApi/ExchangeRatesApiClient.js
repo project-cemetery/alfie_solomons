@@ -1,5 +1,5 @@
 import axios from "axios";
-import { format } from "date-fns";
+import { format, differenceInDays } from "date-fns";
 
 export class ExchangeRatesApiClient {
   constructor({ config }) {
@@ -9,9 +9,23 @@ export class ExchangeRatesApiClient {
     this._historyPromises = {};
   }
 
-  name = "ExchangeRatesApiClient";
+  #NAME = "ExchangeRatesApiClient";
 
-  getExchangeRate = async (from, to) => {
+  find = async (from, to, date) => {
+    const MIN_DAY_FOR_HISTORY_TRANSACTION = 2;
+
+    const rateIsOld =
+      Math.abs(differenceInDays(date, new Date())) >
+      MIN_DAY_FOR_HISTORY_TRANSACTION;
+
+    const rate = await (rateIsOld
+      ? this.#getHistoryExchangeRate(from, to, date)
+      : this.#getExchangeRate(from, to));
+
+    return { rate, source: this.#NAME };
+  };
+
+  #getExchangeRate = async (from, to) => {
     const query = `${from}_${to}`;
 
     if (!this._simplePromises[query]) {
@@ -21,7 +35,7 @@ export class ExchangeRatesApiClient {
     return this._simplePromises[query];
   };
 
-  getHistoryExchangeRate = async (from, to, when) => {
+  #getHistoryExchangeRate = async (from, to, when) => {
     const date = format(when, "yyyy-MM-dd");
     const query = `${from}_${to}`;
 
