@@ -14,11 +14,6 @@ class ConvertController {
       description: "Convert money from one currency to another for exact date",
       summary: "Convert money",
       query: {
-        amount: {
-          type: "string",
-          description:
-            "String representation of money amount in penny (money * 100)",
-        },
         from: {
           type: "string",
           description: "Original currency",
@@ -38,15 +33,17 @@ class ConvertController {
           description: "Successful response",
           type: "object",
           properties: {
-            result: {
+            from: {
               type: "string",
-              description:
-                "String representation of converted money amount in penny (money * 100)",
             },
+            to: { type: "string" },
+            collectAt: { type: "string", format: "date" },
+            rate: { type: "number" },
+            source: { type: "string" },
             accurate: {
               type: "boolean",
-              description: "Is this result accurate?",
             },
+            execution: { type: "string" },
           },
         },
         400: {
@@ -70,39 +67,13 @@ class ConvertController {
     this.errorHandler.invoke(reply, async () => {
       await this._throwUnlessValid(query);
 
-      const { from, to, amount, date } = query;
-      const [cachedValue, saveToCache] = await this.cache.useCache(
-        `${from}_${to}_${amount}_${date}`
-      );
+      const { from, to, date } = query;
 
-      if (cachedValue) {
-        return {
-          result: cachedValue,
-          accurate: true,
-        };
-      }
-
-      const money = {
-        amount: BigInt(amount),
-        currency: from.toUpperCase(),
-      };
+      const sourceCurrency = from.toUpperCase();
       const targetCurrency = to.toUpperCase();
       const when = parseISO(date);
 
-      const { value, accurate } = await this.moneyConverter.convert(
-        money,
-        targetCurrency,
-        when
-      );
-
-      if (accurate) {
-        await saveToCache(value.toString());
-      }
-
-      return {
-        result: value.toString(),
-        accurate: Boolean(accurate),
-      };
+      return this.moneyConverter.convert(sourceCurrency, targetCurrency, when);
     });
 
   _throwUnlessValid = async (query) => {
@@ -112,10 +83,9 @@ class ConvertController {
 
         const fromValid = from && from.length === 3;
         const toValid = to && to.length === 3;
-        const amountValid = !isNaN(Number(amount));
         const dateValid = isValid(parseISO(date));
 
-        return fromValid && toValid && amountValid && dateValid;
+        return fromValid && toValid && dateValid;
       } catch (error) {
         return false;
       }

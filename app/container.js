@@ -4,7 +4,6 @@ const { Cache, InMemoryProvider } = require("@solid-soda/cache");
 const { ConvertController } = require("./presentation/v1/ConvertController");
 const { ErrorHandler } = require("./presentation/ErrorHandler");
 const { MoneyConverter } = require("./application/MoneyConverter");
-const { Exchanger } = require("./domain/Exchanger");
 const {
   LocalRatesRepository,
 } = require("./infrastructure/LocalRatesRepository");
@@ -33,8 +32,6 @@ container.register({
   errorHandler: awilix.asClass(ErrorHandler),
   //application
   moneyConverter: awilix.asClass(MoneyConverter),
-  // domain
-  exchanger: awilix.asClass(Exchanger),
   // infrastructure
   localRatesRepository: awilix.asClass(LocalRatesRepository),
   localRatesSaver: awilix.asClass(LocalRatesSaver),

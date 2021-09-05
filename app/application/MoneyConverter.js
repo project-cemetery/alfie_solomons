@@ -4,36 +4,42 @@ const {
 
 class MoneyConverter {
   constructor({
-    exchanger,
     localRatesRepository,
     localRatesSaver,
     remoteRatesRepository,
   }) {
-    this.exchanger = exchanger;
     this.localRatesRepository = localRatesRepository;
     this.localRatesSaver = localRatesSaver;
     this.remoteRatesRepository = remoteRatesRepository;
   }
 
-  convert = async ({ amount, currency }, targetCurrency, date) => {
+  convert = async (sourceCurrency, targetCurrency, date) => {
     let accurate = true;
-    let rate = await this._findAccurateRate(currency, targetCurrency, date);
+    let rate = await this._findAccurateRate(
+      sourceCurrency,
+      targetCurrency,
+      date
+    );
 
     if (!rate) {
       accurate = false;
       rate = await this.localRatesRepository.findNearest(
-        currency,
+        sourceCurrency,
         targetCurrency,
         date
       );
     }
 
     if (!rate) {
-      throw new CoversationFailedException(currency, targetCurrency, date);
+      throw new CoversationFailedException(
+        sourceCurrency,
+        targetCurrency,
+        date
+      );
     }
 
     return {
-      value: this.exchanger.exchange(amount, rate),
+      ...rate,
       accurate,
     };
   };
@@ -41,15 +47,19 @@ class MoneyConverter {
   _findAccurateRate = async (from, to, date) => {
     let rate = await this.localRatesRepository.find(from, to, date);
 
-    if (!rate) {
-      rate = await this.remoteRatesRepository.find(from, to, date);
-
-      await this.localRatesSaver.save(rate).catch(() => {
-        // okay, we can't save rate to local registry
-      });
+    if (rate) {
+      return { ...rate, execution: "local" };
     }
 
-    return rate;
+    rate = await this.remoteRatesRepository.find(from, to, date);
+
+    await this.localRatesSaver.save(rate).catch((e) => {
+      // okay, we can't save rate to local registry
+      // TODO: logging
+      console.error(e);
+    });
+
+    return { ...rate, execution: "remote" };
   };
 }
 

@@ -1,6 +1,6 @@
 const axios = require("axios");
 const { format, differenceInDays } = require("date-fns");
-const { Option } = require("nanoption");
+const { isEmpty } = require("lodash");
 
 const { identity } = require("../../helpers/identity");
 
@@ -11,6 +11,8 @@ class MannyApiClient {
     this._simplePromises = {};
     this._historyPromises = {};
   }
+
+  name = "MannyApiClient";
 
   getExchangeRate = async (from, to) => {
     const query = `${from}_${to}`;
@@ -28,7 +30,7 @@ class MannyApiClient {
     // Api not respond for date older than MAX_RATE_AGE_IN_DAYS
     // Blank-shot-requests not successful, but spend the limit
     if (Math.abs(differenceInDays(when, new Date())) > MAX_RATE_AGE_IN_DAYS) {
-      return Promise.resolve(Option.of(null));
+      return Promise.resolve(null);
     }
 
     const date = format(when, "yyyy-MM-dd");
@@ -62,9 +64,7 @@ class MannyApiClient {
       .then((data) => data.results)
       .then((results) => results[query])
       .then(mapper)
-      .then((rate) => parseFloat(rate.val))
-      .then((rate) => Option.of(rate))
-      .catch(() => Option.of(null));
+      .then((rate) => rate.val)
   };
 }
 

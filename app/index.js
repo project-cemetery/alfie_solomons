@@ -1,4 +1,4 @@
-const fastify = require("fastify")({ logger: true });
+const fastify = require("fastify")({ logger: false });
 const swagger = require("fastify-swagger");
 
 const { container } = require("./container");

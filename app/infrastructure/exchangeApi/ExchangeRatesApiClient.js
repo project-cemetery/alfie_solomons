@@ -1,12 +1,15 @@
 const axios = require("axios");
 const { format } = require("date-fns");
-const { Option } = require("nanoption");
 
 class ExchangeRatesApiClient {
-  constructor() {
+  constructor({ config }) {
+    this._apiKey = config.getOrThrow("EXCHANGE_RATES_API_KEY");
+
     this._simplePromises = {};
     this._historyPromises = {};
   }
+
+  name = "ExchangeRatesApiClient";
 
   getExchangeRate = async (from, to) => {
     const query = `${from}_${to}`;
@@ -36,20 +39,37 @@ class ExchangeRatesApiClient {
   };
 
   _request = async ({ from, to, date }) => {
-    const API_URL = "https://api.exchangeratesapi.io";
+    const API_URL = "http://api.exchangeratesapi.io";
 
     const dateParam = !!date ? `${date}` : "latest";
 
-    const requestUrl = `${API_URL}/${dateParam}?base=${from}&symbols=${to}`;
+    const rateFromEuroToAnything = (currecy) => {
+      const requestUrl = `${API_URL}/${dateParam}?&symbols=${currecy}&access_key=${this._apiKey}`;
 
-    return axios
-      .get(requestUrl)
-      .then((response) => response.data)
-      .then((data) => data.rates)
-      .then((rates) => rates[to])
-      .then((rate) => parseFloat(rate))
-      .then((rate) => Option.of(rate))
-      .catch(() => Option.of(null));
+      return axios
+        .get(requestUrl)
+        .then((response) => response.data)
+        .then((data) => {
+          if (!data.success) {
+            throw new Error(
+              `${data.error.code}: ${data.error.type}: ${
+                data.error.info ?? "Something went wrong"
+              }`
+            );
+          }
+
+          return data.rates;
+        })
+        .then((rates) => rates[currecy])
+        .then((rate) => parseFloat(rate));
+    }
+
+    const [eurTo, eurFrom] = await Promise.all([
+      rateFromEuroToAnything(to),
+      rateFromEuroToAnything(from),
+    ]);
+
+    return eurFrom / eurTo;
   };
 }
 

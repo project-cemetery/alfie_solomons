@@ -1,4 +1,4 @@
-const { ExchangeRateModel } = require('./model/ExchangeRateModel');
+const { ExchangeRateModel } = require("./model/ExchangeRateModel");
 
 class LocalRatesSaver {
   constructor({ queryBuilder }) {
