@@ -15,8 +15,8 @@ export const getDbClient = ({ config }) => {
     pgConfig = {
       connectionString: config.getStringOrThrow("DATABASE_URL"),
       ssl: {
-        require: true,
-        rejectUnauthorized: false,
+        ca: config.getStringOrThrow("DATABASE_CA_CERT"),
+        rejectUnauthorized: true,
       },
     };
   }
