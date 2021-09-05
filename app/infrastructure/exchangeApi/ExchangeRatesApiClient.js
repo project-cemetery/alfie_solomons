@@ -15,7 +15,7 @@ export class ExchangeRatesApiClient {
     const query = `${from}_${to}`;
 
     if (!this._simplePromises[query]) {
-      this._simplePromises[query] = this._request({ from, to });
+      this._simplePromises[query] = this.#request({ from, to });
     }
 
     return this._simplePromises[query];
@@ -28,7 +28,7 @@ export class ExchangeRatesApiClient {
     const fullQuery = `${query}_${date}`;
 
     if (!this._historyPromises[fullQuery]) {
-      this._historyPromises[fullQuery] = this._request({
+      this._historyPromises[fullQuery] = this.#request({
         from,
         to,
         date,
@@ -38,7 +38,7 @@ export class ExchangeRatesApiClient {
     return this._historyPromises[fullQuery];
   };
 
-  _request = async ({ from, to, date }) => {
+  #request = async ({ from, to, date }) => {
     const API_URL = "http://api.exchangeratesapi.io";
 
     const dateParam = !!date ? `${date}` : "latest";
@@ -69,6 +69,6 @@ export class ExchangeRatesApiClient {
       rateFromEuroToAnything(from),
     ]);
 
-    return eurFrom / eurTo;
+    return eurTo / eurFrom;
   };
 }

@@ -64,7 +64,7 @@ export class ConvertController {
 
   handle = async ({ query }, reply) =>
     this.errorHandler.invoke(reply, async () => {
-      await this._throwUnlessValid(query);
+      await this.#throwUnlessValid(query);
 
       const { from, to, date } = query;
 
@@ -75,10 +75,10 @@ export class ConvertController {
       return this.moneyConverter.convert(sourceCurrency, targetCurrency, when);
     });
 
-  _throwUnlessValid = async (query) => {
+  #throwUnlessValid = async (query) => {
     const requestIsValid = () => {
       try {
-        const { from, to, amount, date } = query;
+        const { from, to, date } = query;
 
         const fromValid = from && from.length === 3;
         const toValid = to && to.length === 3;

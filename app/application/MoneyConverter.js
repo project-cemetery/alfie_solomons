@@ -13,7 +13,7 @@ export class MoneyConverter {
 
   convert = async (sourceCurrency, targetCurrency, date) => {
     let accurate = true;
-    let rate = await this._findAccurateRate(
+    let rate = await this.#findAccurateRate(
       sourceCurrency,
       targetCurrency,
       date
@@ -42,7 +42,7 @@ export class MoneyConverter {
     };
   };
 
-  _findAccurateRate = async (from, to, date) => {
+  #findAccurateRate = async (from, to, date) => {
     let rate = await this.localRatesRepository.find(from, to, date);
 
     if (rate) {

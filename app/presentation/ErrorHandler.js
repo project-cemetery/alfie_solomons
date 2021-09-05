@@ -9,18 +9,18 @@ export class ErrorHandler {
       return response;
     } catch (error) {
       if (error instanceof InvalidQueryException) {
-        return this._handleInvalidQueryException(reply, error);
+        return this.#handleInvalidQueryException(reply, error);
       }
 
       if (error instanceof CoversationFailedException) {
-        return this._handleCoversationFailedException(reply, error);
+        return this.#handleCoversationFailedException(reply, error);
       }
 
       throw error;
     }
   };
 
-  _handleInvalidQueryException = (reply, error) => {
+  #handleInvalidQueryException = (reply, error) => {
     reply.code(400);
 
     return {
@@ -29,7 +29,7 @@ export class ErrorHandler {
     };
   };
 
-  _handleCoversationFailedException = (reply, error) => {
+  #handleCoversationFailedException = (reply, error) => {
     reply.code(500);
 
     return {

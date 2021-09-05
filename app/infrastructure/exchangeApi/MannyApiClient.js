@@ -17,7 +17,7 @@ export class MannyApiClient {
     const query = `${from}_${to}`;
 
     if (!this._simplePromises[query]) {
-      this._simplePromises[query] = this._request({ query });
+      this._simplePromises[query] = this.#request({ query });
     }
 
     return this._simplePromises[query];
@@ -38,7 +38,7 @@ export class MannyApiClient {
     const fullQuery = `${query}_${date}`;
 
     if (!this._historyPromises[fullQuery]) {
-      this._historyPromises[fullQuery] = this._request(
+      this._historyPromises[fullQuery] = this.#request(
         {
           query,
           date,
@@ -50,7 +50,7 @@ export class MannyApiClient {
     return this._historyPromises[fullQuery];
   };
 
-  _request = async ({ query, date }, mapper = identity) => {
+  #request = async ({ query, date }, mapper = identity) => {
     const API_URL = "https://free.currencyconverterapi.com/api/v6/convert";
 
     const dateParam = !!date ? `&date=${date}` : "";

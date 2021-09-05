@@ -49,12 +49,12 @@ export class LocalRatesRepository {
   };
 
   find = async (from, to, date) => {
-    const actualRate = await this._findRate(from, to, date);
+    const actualRate = await this.#findRate(from, to, date);
     if (actualRate) {
       return actualRate;
     }
 
-    const reverseRate = await this._findRate(to, from, date);
+    const reverseRate = await this.#findRate(to, from, date);
     if (reverseRate) {
       return reverseRate.reverse();
     }
@@ -62,7 +62,7 @@ export class LocalRatesRepository {
     return null;
   };
 
-  _findRate = async (from, to, date) => {
+  #findRate = async (from, to, date) => {
     const period = [
       startOfDay(date).toISOString(),
       endOfDay(date).toISOString(),

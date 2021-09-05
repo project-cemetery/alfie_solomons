@@ -17,8 +17,8 @@ export class RemoteRatesRepository {
       MIN_DAY_FOR_HISTORY_TRANSACTION;
 
     const result = await (rateIsOld
-      ? this._getHistoryExchangeRate(from, to, date)
-      : this._getExchangeRate(from, to));
+      ? this.#getHistoryExchangeRate(from, to, date)
+      : this.#getExchangeRate(from, to));
 
     if (isNull(result)) {
       return null;
@@ -29,7 +29,7 @@ export class RemoteRatesRepository {
     return new ExchangeRateModel(from, to, date, rate, source);
   };
 
-  _getExchangeRate = async (from, to) => {
+  #getExchangeRate = async (from, to) => {
     for (const client of this.clients) {
       try {
         const rate = await this._fetchWithTimeout(
@@ -46,11 +46,12 @@ export class RemoteRatesRepository {
     return null;
   };
 
-  _getHistoryExchangeRate = async (from, to, when) => {
+  #getHistoryExchangeRate = async (from, to, when) => {
     for (const client of this.clients) {
       try {
-        const rate = await this._fetchWithTimeout(
-          client.getHistoryExchangeRate(from, to, when)
+        const rate = await timeout(
+          client.getHistoryExchangeRate(from, to, when),
+          1000
         );
 
         return { rate, source: client.name };
@@ -61,9 +62,5 @@ export class RemoteRatesRepository {
     }
 
     return null;
-  };
-
-  _fetchWithTimeout = async (promise) => {
-    return timeout(promise, 1000);
   };
 }
