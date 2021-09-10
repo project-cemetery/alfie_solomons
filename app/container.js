@@ -9,7 +9,7 @@ import { MannyApiClient } from "./infrastructure/exchangeApi/MannyApiClient.js";
 import { ExchangeRatesApiClient } from "./infrastructure/exchangeApi/ExchangeRatesApiClient.js";
 import { getConfig } from "./utils/getConfig.js";
 import { getDbClient } from "./utils/getDbClient.js";
-import { getQueryBuilder } from "./utils/getQueryBuilder.js";
+import { getOrm } from "./utils/getOrm.js";
 
 const container = awilix.createContainer({
   injectionMode: awilix.InjectionMode.PROXY,
@@ -28,7 +28,7 @@ container.register({
   exchangeRatesApiClient: awilix.asClass(ExchangeRatesApiClient),
   config: awilix.asFunction(getConfig),
   dbClient: awilix.asFunction(getDbClient),
-  queryBuilder: awilix.asFunction(getQueryBuilder),
+  ormConnection: awilix.asFunction(getOrm),
 });
 
 export { container };

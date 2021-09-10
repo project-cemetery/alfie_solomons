@@ -1,34 +1,53 @@
 import { startOfDay, endOfDay } from "date-fns";
 import { differenceInDays } from "date-fns";
+import { Between, MoreThanOrEqual, LessThanOrEqual } from "typeorm";
 
 import { ExchangeRate } from "../application/ExchangeRate.js";
+import { ExchangeRateSchema } from "../entity/ExchangeRateSchema.js";
 
 export class LocalRatesRepository {
-  constructor({ queryBuilder }) {
-    this.queryBuilder = queryBuilder;
+  constructor({ ormConnection }) {
+    this.waitableConnection = ormConnection;
   }
 
-  #TABLE = "exchange_rate";
-
   save = async (rate) => {
-    await this.queryBuilder.insert(rate).table(this.#TABLE);
+    const connection = await this.waitableConnection;
+
+    await connection
+      .createQueryBuilder()
+      .insert()
+      .into(ExchangeRateSchema)
+      .values([rate])
+      .execute();
   };
 
   findNearest = async (from, to, date) => {
+    const connection = await this.waitableConnection;
+
     const [firstAfter, lastBefore] = await Promise.all([
-      this.queryBuilder
-        .where({ from, to })
-        .andWhere("date", ">=", date.toISOString())
-        .orderBy("date", "desc")
-        .first()
-        .table(this.#TABLE),
-      this.queryBuilder
-        .where({ from, to })
-        .andWhere("date", "<", date.toISOString())
-        .orderBy("date", "asc")
-        .first()
-        .table(this.#TABLE),
+      connection.getRepository(ExchangeRateSchema).findOne({
+        where: {
+          from,
+          to,
+          date: MoreThanOrEqual(date),
+        },
+        order: {
+          date: "DESC",
+        },
+      }),
+      connection.getRepository(ExchangeRateSchema).findOne({
+        where: {
+          from,
+          to,
+          date: LessThanOrEqual(date),
+        },
+        order: {
+          date: "ASC",
+        },
+      }),
     ]);
+
+    console.log(firstAfter, lastBefore);
 
     if (!firstAfter && !lastBefore) {
       return null;
@@ -47,7 +66,7 @@ export class LocalRatesRepository {
 
     const nearest = afterDistance > beforeDistance ? lastBefore : firstAfter;
 
-    return nearest;
+    return ExchangeRate.fromObject(nearest, { execution: "local" });
   };
 
   find = async (from, to, date) => {
@@ -65,19 +84,16 @@ export class LocalRatesRepository {
   };
 
   #findRate = async (from, to, date) => {
-    const period = [
-      startOfDay(date).toISOString(),
-      endOfDay(date).toISOString(),
-    ];
+    const connection = await this.waitableConnection;
 
-    const rate = await this.queryBuilder
-      .where({ from, to })
-      .whereBetween("date", period)
-      .first()
-      .table(this.#TABLE);
+    const rate = await connection.getRepository(ExchangeRateSchema).findOne({
+      from,
+      to,
+      date: Between(startOfDay(date), endOfDay(date)),
+    });
 
     if (rate) {
-      return ExchangeRate.fromObject(rate);
+      return ExchangeRate.fromObject(rate, { execution: "local" });
     }
 
     return null;

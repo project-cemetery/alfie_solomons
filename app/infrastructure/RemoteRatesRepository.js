@@ -15,7 +15,7 @@ export class RemoteRatesRepository {
           1000
         );
 
-        return new ExchangeRate(from, to, date, rate, source);
+        return new ExchangeRate(from, to, date, rate, source, "remote");
       } catch (e) {
         continue;
       }
