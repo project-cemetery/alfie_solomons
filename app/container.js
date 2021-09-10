@@ -8,7 +8,7 @@ import { RemoteRatesRepository } from "./infrastructure/RemoteRatesRepository.js
 import { MannyApiClient } from "./infrastructure/exchangeApi/MannyApiClient.js";
 import { ExchangeRatesApiClient } from "./infrastructure/exchangeApi/ExchangeRatesApiClient.js";
 import { getConfig } from "./utils/getConfig.js";
-import { getDbClient } from "./utils/getDbClient.js";
+import { getDbConfig } from "./utils/getDbConfig.js";
 import { getOrm } from "./utils/getOrm.js";
 
 const container = awilix.createContainer({
@@ -27,7 +27,7 @@ container.register({
   mannyApiClient: awilix.asClass(MannyApiClient),
   exchangeRatesApiClient: awilix.asClass(ExchangeRatesApiClient),
   config: awilix.asFunction(getConfig),
-  dbClient: awilix.asFunction(getDbClient),
+  dbConfig: awilix.asFunction(getDbConfig),
   ormConnection: awilix.asFunction(getOrm),
 });
 

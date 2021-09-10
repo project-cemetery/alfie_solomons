@@ -1,6 +1,4 @@
-import PG from "pg";
-
-export const getDbClient = ({ config }) => {
+export const getDbConfig = ({ config }) => {
   let pgConfig;
 
   if (config.isDev()) {
@@ -21,5 +19,5 @@ export const getDbClient = ({ config }) => {
     };
   }
 
-  return new PG.Client(pgConfig);
+  return pgConfig;
 };

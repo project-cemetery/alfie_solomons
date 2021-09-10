@@ -2,14 +2,19 @@ import { createConnection } from "typeorm";
 
 import { ExchangeRateSchema } from "../entity/ExchangeRateSchema.js";
 
-export function getOrm({ config }) {
+export function getOrm({ dbConfig }) {
+  const { user, database, password, port, host, connectionString, ssl } =
+    dbConfig;
+
   return createConnection({
+    url: connectionString,
+    username: user,
+    database,
+    password,
+    port,
+    host,
+    ssl,
     type: "postgres",
-    username: config.getOrThrow("DB_USER"),
-    database: config.getOrThrow("DB_NAME"),
-    password: config.getOrThrow("DB_PASSWORD"),
-    port: config.getOrThrow("DB_PORT"),
-    host: config.getOrThrow("DB_HOST"),
     synchronize: false,
     entities: [ExchangeRateSchema],
   });

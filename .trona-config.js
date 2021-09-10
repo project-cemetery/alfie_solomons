@@ -1,6 +1,9 @@
+import PG from "pg";
+
 import { container } from "./app/container.js";
 
-const client = container.resolve("dbClient");
+const config = container.resolve("dbConfig");
+const client = new PG.Client(config);
 
 await client.connect();
 
