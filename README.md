@@ -19,7 +19,7 @@ Container accept the following env-variables:
 
 Before starting the application, you must initialize tables for application. Run inside the container next commands:
 
-- `yarn evolutions -y`
+- `yarn trona -y`
 
 Now, application listen `3001` port in container, you can use it.
 

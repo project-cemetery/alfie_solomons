@@ -9,7 +9,6 @@ await client.connect();
 
 console.log(`Connected to database`);
 
-export const evolutionsFolderPath = ["evolutions"];
 export function runQuery(query) {
   return client.query(query).then((result) => result.rows);
 }
